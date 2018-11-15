@@ -25,7 +25,9 @@ $packages = @("adobereader",
 $software = @(("https://discordapp.com/api/download/canary?platform=win", "Discord Canary", "discordcanary"),
               ("https://cdn-fastly.obsproject.com/downloads/OBS-Studio-22.0.2-Full-Installer-x64.exe", "OBS", "obs"),
               ("https://download.microsoft.com/download/1/3/F/13F19BF0-17CF-4D0F-938C-41D0489C3FE6/KB3133719-x64.msu.msu", "Microsoft Media Pack", "microsoft_media_pack"))
-              
+
+$start_time = Get-Date            
+
 # Sets permissions and methods for the rest of the scripts
 Invoke-Expression "& Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass"
 [Net.ServicePointManager]::SecurityProtocol = "Tls12, Tls11, Tls, Ssl3"
@@ -42,6 +44,7 @@ If(-Not (Test-Path -Path "$env:ProgramData\Chocolatey")) {
 # Install .NET CLI environment
 #Invoke-Expression "& .\dotnet-install.ps1"
 
+
 # Installs each package in Chocolatey
 Foreach ($p in $packages)
 {
@@ -50,10 +53,12 @@ Foreach ($p in $packages)
     Invoke-Expression "& $command"
 }
 
+# Installs AHK Scripts
+
 # Installs the rest of the software
 Foreach ($s in $software)
 {
-    $start_time = Get-Date
+    $install_start_time = Get-Date
     $filename = $s[2]
     $output = "C:\Users\mwollam\Downloads\$filename.exe"
 
@@ -63,8 +68,9 @@ Foreach ($s in $software)
     Write-Host "Installing" $s[1]
     Start-Process $output "/S"
 
-    Write-Output "Time taken: $((Get-Date).Subtract($start_time).Seconds) second(s)"
+    Write-Output "Time taken: $((Get-Date).Subtract($install_start_time).Seconds) second(s)"
 }
 
 # Finally, restarts the computer so changes take effect
-Restart-Computer    
+Write-Output "Time taken: $((Get-Date).Subtract($install_start_time).Seconds) second(s)"
+#Restart-Computer    

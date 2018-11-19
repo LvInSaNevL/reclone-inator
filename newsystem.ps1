@@ -1,3 +1,5 @@
+$test = $packages
+
 # The list of packages installed with Chocolatey
 $packages = @("adobereader",
               "git",

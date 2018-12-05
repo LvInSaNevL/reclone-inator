@@ -28,7 +28,9 @@ $packages = @("adobereader",
 $software = @(("https://discordapp.com/api/download/canary?platform=win", "Discord Canary", "discordcanary"),
               ("https://cdn-fastly.obsproject.com/downloads/OBS-Studio-22.0.2-Full-Installer-x64.exe", "OBS", "obs"),
               ("https://download.microsoft.com/download/1/3/F/13F19BF0-17CF-4D0F-938C-41D0489C3FE6/KB3133719-x64.msu.msu", "Microsoft Media Pack", "microsoft_media_pack"),
-              ("https://download.visualstudio.microsoft.com/download/pr/9b60a25e-5b31-4550-aae1-72516c1067f6/52e8387487fecef06266a7a19c97ddee/dotnet-sdk-2.1.500-win-gs-x64.exe", "Dotnet CLI Tools", "dotnet_install")
+              ("https://download.visualstudio.microsoft.com/download/pr/9b60a25e-5b31-4550-aae1-72516c1067f6/52e8387487fecef06266a7a19c97ddee/dotnet-sdk-2.1.500-win-gs-x64.exe", "Dotnet CLI Tools", "dotnet_install"),
+              ("https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools&rel=15", "Microsoft Build Tools", "ms_build_tools"),
+              ("https://win.rustup.rs", "Rust", "rust")
              )
 
 # Global Variables              

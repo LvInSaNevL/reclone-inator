@@ -1,4 +1,7 @@
-$test = $packages
+# Global Variables              
+$start_time = Get-Date            
+$prog_loc = (Resolve-Path .\).Path
+$user = $env:username
 
 # The list of packages installed with Chocolatey
 $packages = @("adobereader",
@@ -33,11 +36,6 @@ $software = @(("https://discordapp.com/api/download/canary?platform=win", "Disco
               ("https://win.rustup.rs", "Rust", "rust")
              )
 
-# Global Variables              
-$start_time = Get-Date            
-$prog_loc = (Resolve-Path .\).Path
-$user = $env:username
-
 # Checks internet connection
 $connected = $false
 while (!($connected))
@@ -69,6 +67,7 @@ If(-Not (Test-Path -Path "$env:ProgramData\Chocolatey")) {
 
 # Install .NET CLI environment
 Invoke-Expression "& .\dotnet-install.ps1"
+Invoke-Expression "& refreshenv"
 
 # Installs each package in Chocolatey
 Foreach ($p in $packages)
@@ -95,7 +94,8 @@ Foreach ($s in $software)
     Write-Host "Installing" $s[1]
     Start-Process $output "/S"
 
-    Write-Output "Time taken: $((Get-Date).Subtract($install_start_time).Seconds) second(s)"
+    Write-Output "Time taken: $((Get-Date).Subtract($install_start_time).Seconds) second(s)"    
+    Invoke-Expression "& refreshenv"
 }
 
 # Installs and updates all needed drivers for the system

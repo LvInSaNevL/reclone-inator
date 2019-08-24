@@ -1,8 +1,8 @@
+import os
 def yellowText(input):
     print("\033[33m" + input + "\033[m")
 
-yellowText("Creating temporary install directory")
-print("mkdir ./installTemp")
-for deb in debs:
-   yellowText("Installing " + deb[1])
-   print("wget -O %s.deb %d" %(deb[2], deb[0]))
+fstab = ["/dev/sda2	/mnt	auto	auto,nouser,exec,rw,async,atime	0 0"]
+
+for mount in fstab:
+    os.system("sudo su -c \"echo '%s' >> /etc/fstab\"" %(mount))

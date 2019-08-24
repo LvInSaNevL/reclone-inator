@@ -33,11 +33,17 @@ snapPacks = ["okular",
             "dotnet-sdk && sudo snap alias dotnet-sdk.dotnet dotnet"]
 
 # Debian Archives
-debs = [["https://discordapp.com/api/download/canary?platform=linux", "Discord Canary", "discord.deb"],
-        ["https://go.microsoft.com/fwlink/?LinkID=760865", "VS Code Insiders", "vscode.deb"],
-        ["https://steamcdn-a.akamaihd.net/client/installer/steam.deb", "Steam", "steam.deb"]]
+debs = [["https://discordapp.com/api/download/canary?platform=linux", "Discord Canary", "./installTemp/discord.deb"],
+        ["https://go.microsoft.com/fwlink/?LinkID=760865", "VS Code Insiders", "./installTemp/vscode.deb"],
+        ["https://steamcdn-a.akamaihd.net/client/installer/steam.deb", "Steam", "./installTemp/steam.deb"]]
 
 manualInstalls = ["https://public-cdn.cloud.unity3d.com/hub/prod/UnityHubSetup.AppImage"]
+
+fstab = ["/dev/sda2	/mnt	auto	auto,nouser,exec,rw,async,atime	0 0"]
+
+gnomeSettings = ["gsettings set org.gnome.desktop.background show-desktop-icons FALSE",
+                 "org.gnome.desktop.background picture-uri file:///%s/backgrounds/Enceladus.png" %(os.getcwd()),
+                 "org.gnome.shell.extensions.dash-to-dock dock-position BOTTOM"]
 
 # Adding repos
 for ppa in repos:
@@ -61,8 +67,8 @@ yellowText("Creating temporary install directory")
 os.system("mkdir ./installTemp")
 for deb in debs:
    yellowText("Installing " + deb[1])
-   os.system("wget -O %s %s" %(deb[2], deb[0]))
-   os.system("dpkg -i %s" %deb[2])
+   os.system("wget -O ./installTemp/%s %s" %(deb[2], deb[0]))
+   os.system("sudo dpkg -i %s" %deb[2])
 yellowText("Cleaning up install files")
 os.system("rm -rv ./installTemp")
 
@@ -72,6 +78,12 @@ os.system("sudo apt install --fix-broken -y && sudo apt autoremove")
 yellowText("Updating the system")
 os.system("sudo apt update && sudo apt upgrade")
 
+# Quality of life changes
+for mount in fstab:
+    os.system("sudo su -c \"echo '%s' >> /etc/fstab" %(mount))
+for setting in gnomeSettings:
+    os.system("gsettings set %s" %setting)
+
 # Reboots the system
-input("Press any key to reboot the system")
+raw_input("Press any key to reboot the system")
 os.system("reboot")

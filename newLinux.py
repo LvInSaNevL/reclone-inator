@@ -1,4 +1,6 @@
 import os
+import shutil
+
 def yellowText(input):
     print("\033[33m" + input + "\033[m")
 
@@ -28,7 +30,8 @@ aptPacks = ["ubuntu-gnome-desktop --no-install-recommends",
             "zlib1g",
             "libicu60",
             "speedtest-cli",
-	        "cifs-utils"]
+	        "cifs-utils",
+            "gimp"]
 
 # Snap packages
 snapPacks = ["okular",
@@ -82,7 +85,7 @@ os.system("sudo apt install --fix-broken -y && sudo apt autoremove")
 yellowText("Updating the system")
 os.system("sudo apt update && sudo apt upgrade")
 
-# Mounting network drives and setting gnome up
+# Quality of life changes (Network drives, gnome settings, VS Code settings)
 username = raw_input("What is your Bistack username; ")
 password = raw_input("What is your Bistack password; ")
 print("sudo su -c \"echo '/dev/sda2	       /mnt           	              auto auto,nouser,exec,rw,async,atime	             0 0' >> /etc/fstab")

@@ -58,7 +58,7 @@ Foreach ($p in $packages)
 
 # Runs AHK Script
 Write-Host "Starting AutoHotKey script"
-Invoke-Expression "& .\AutoHotKey.ahk"
+Invoke-Expression "& .\files\AutoHotKey.ahk"
 
 # Installs the rest of the software
 Foreach ($s in $software)

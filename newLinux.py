@@ -26,7 +26,9 @@ aptPacks = ["ubuntu-gnome-desktop --no-install-recommends",
             "libssl1.0.0",
             "libkrb5-3",
             "zlib1g",
-            "libicu60",]
+            "libicu60",
+            "speedtest-cli",
+	        "cifs-utils"]
 
 # Snap packages
 snapPacks = ["okular",
@@ -39,7 +41,9 @@ debs = [["https://discordapp.com/api/download/canary?platform=linux", "Discord C
 
 manualInstalls = ["https://public-cdn.cloud.unity3d.com/hub/prod/UnityHubSetup.AppImage"]
 
-fstab = ["/dev/sda2	/mnt	auto	auto,nouser,exec,rw,async,atime	0 0"]
+fstab = ["//bistack/vault      /mnt/Network_Shares/Vault      cifs username={},password={},noperm,iocharset=utf8 0 0",
+         "//bistack/matt       /mnt/Network_Shares/Matt       cifs username={},password={},noperm,iocharset=utf8 0 0",
+         "//bistack/cadosphere /mnt/Network_Shares/Cadosphere cifs username={},password={},noperm,iocharset=utf8 0 0"]
 
 gnomeSettings = ["gsettings set org.gnome.desktop.background show-desktop-icons FALSE",
                  "org.gnome.desktop.background picture-uri file:///%s/backgrounds/Enceladus.png" %(os.getcwd()),
@@ -78,9 +82,13 @@ os.system("sudo apt install --fix-broken -y && sudo apt autoremove")
 yellowText("Updating the system")
 os.system("sudo apt update && sudo apt upgrade")
 
-# Quality of life changes
+# Mounting network drives and setting gnome up
+username = raw_input("What is your Bistack username; ")
+password = raw_input("What is your Bistack password; ")
+print("sudo su -c \"echo '/dev/sda2	       /mnt           	              auto auto,nouser,exec,rw,async,atime	             0 0' >> /etc/fstab")
 for mount in fstab:
-    os.system("sudo su -c \"echo '%s' >> /etc/fstab" %(mount))
+    mountCreds = mount.format(username, password)
+    print("sudo su -c \"echo '{}' >> /etc/fstab".format(mount.format(username, password)))
 for setting in gnomeSettings:
     os.system("gsettings set %s" %setting)
 

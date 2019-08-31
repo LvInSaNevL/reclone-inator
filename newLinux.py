@@ -56,6 +56,10 @@ gnomeSettings = ["gsettings set org.gnome.desktop.background show-desktop-icons 
                              "org.gnome.desktop.background picture-uri file:///%s/backgrounds/Enceladus.png" %(os.getcwd()),
                              "org.gnome.shell.extensions.dash-to-dock dock-position BOTTOM"]
 
+# Authenticating with sudo
+yellowText("Please authenticate as sudo")
+os.system("sudo -v")
+
 # Adding repos
 for ppa in repos:
     yellowText("Adding repository " + ppa)

@@ -11,34 +11,34 @@ repos = ["ppa:lyzardking/ubuntu-make",
 
 # APT install list
 aptPacks = ["ubuntu-gnome-desktop --no-install-recommends",
-            "build-essential",
-            "gparted",
-            "libgconf-2-4",
-            "libappindicator1",
-            "snapd",
-            "gnome-tweaks",
-            "dconf-editor",
-            "libc6-i386",
-            "libgl1-mesa-dri:i386",
-            "libgl1-mesa-glx:i386",
-            "libc6:i386",
-            "vlc",
-            "blender",
-            "liblttng-ust0",
-            "libcurl4",
-            "libssl1.0.0",
-            "libkrb5-3",
-            "zlib1g",
-            "libicu60",
-            "speedtest-cli",
-	        "cifs-utils",
-            "gimp",
-            "ffmpeg"
-            "obs-studio"]
+                    "build-essential",
+                    "gparted",
+                    "libgconf-2-4",
+                    "libappindicator1",
+                    "snapd",
+                    "gnome-tweaks",
+                    "dconf-editor",
+                    "libc6-i386",
+                    "libgl1-mesa-dri:i386",
+                    "libgl1-mesa-glx:i386",
+                    "libc6:i386",
+                    "vlc",
+                    "blender",
+                    "liblttng-ust0",
+                    "libcurl4",
+                    "libssl1.0.0",
+                    "libkrb5-3",
+                    "zlib1g",
+                    "libicu60",
+                    "speedtest-cli",
+                    "cifs-utils",
+                    "gimp",
+                    "ffmpeg"
+                    "obs-studio"]
 
 # Snap packages
 snapPacks = ["okular",
-            "dotnet-sdk && sudo snap alias dotnet-sdk.dotnet dotnet"]
+                     "dotnet-sdk && sudo snap alias dotnet-sdk.dotnet dotnet"]
 
 # Debian Archives
 debs = [["https://discordapp.com/api/download/canary?platform=linux", "Discord Canary", "./installTemp/discord.deb"],
@@ -53,8 +53,8 @@ fstab = ["//bistack/vault      /mnt/Network_Shares/Vault      cifs username={},p
          "//bistack/cadosphere /mnt/Network_Shares/Cadosphere cifs username={},password={},noperm,iocharset=utf8 0 0"]
 
 gnomeSettings = ["gsettings set org.gnome.desktop.background show-desktop-icons FALSE",
-                 "org.gnome.desktop.background picture-uri file:///%s/backgrounds/Enceladus.png" %(os.getcwd()),
-                 "org.gnome.shell.extensions.dash-to-dock dock-position BOTTOM"]
+                             "org.gnome.desktop.background picture-uri file:///%s/backgrounds/Enceladus.png" %(os.getcwd()),
+                             "org.gnome.shell.extensions.dash-to-dock dock-position BOTTOM"]
 
 # Adding repos
 for ppa in repos:
@@ -89,7 +89,7 @@ os.system("sudo apt install --fix-broken -y && sudo apt autoremove")
 yellowText("Updating the system")
 os.system("sudo apt update && sudo apt upgrade")
 
-# Quality of life changes (Network drives, gnome settings, VS Code settings)
+# Quality of life changes (Network drives, gnome settings, VS Code settings, Forge MC installer)
 username = raw_input("What is your Bistack username; ")
 password = raw_input("What is your Bistack password; ")
 print("sudo su -c \"echo '/dev/sda2	       /mnt           	              auto auto,nouser,exec,rw,async,atime	             0 0' >> /etc/fstab")
@@ -98,6 +98,8 @@ for mount in fstab:
     print("sudo su -c \"echo '{}' >> /etc/fstab".format(mount.format(username, password)))
 for setting in gnomeSettings:
     os.system("gsettings set %s" %setting)
+os.system("wget -0 forge.jar https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.12.2-14.23.5.2844/forge-1.12.2-14.23.5.2844-installer.jar")
+os.system("java -jar forge-1.12.2-14.23.5.2844-installer.jar nogui")
 
 # Reboots the system
 raw_input("Press any key to reboot the system")

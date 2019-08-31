@@ -6,7 +6,8 @@ def yellowText(input):
 
 # PPAs that I need
 repos = ["ppa:lyzardking/ubuntu-make",
-         "ppa:ubuntu-mozilla-daily/firefox-aurora"]
+               "ppa:ubuntu-mozilla-daily/firefox-aurora",
+               "ppa:obsproject/obs-studio"]
 
 # APT install list
 aptPacks = ["ubuntu-gnome-desktop --no-install-recommends",
@@ -31,7 +32,9 @@ aptPacks = ["ubuntu-gnome-desktop --no-install-recommends",
             "libicu60",
             "speedtest-cli",
 	        "cifs-utils",
-            "gimp"]
+            "gimp",
+            "ffmpeg"
+            "obs-studio"]
 
 # Snap packages
 snapPacks = ["okular",
@@ -39,8 +42,9 @@ snapPacks = ["okular",
 
 # Debian Archives
 debs = [["https://discordapp.com/api/download/canary?platform=linux", "Discord Canary", "./installTemp/discord.deb"],
-        ["https://go.microsoft.com/fwlink/?LinkID=760865", "VS Code Insiders", "./installTemp/vscode.deb"],
-        ["https://steamcdn-a.akamaihd.net/client/installer/steam.deb", "Steam", "./installTemp/steam.deb"]]
+            ["https://go.microsoft.com/fwlink/?LinkID=760865", "VS Code Insiders", "./installTemp/vscode.deb"],
+            ["https://steamcdn-a.akamaihd.net/client/installer/steam.deb", "Steam", "./installTemp/steam.deb"],
+            ["https://launcher.mojang.com/download/Minecraft.deb", "Minecrat", "./installTemp/minecraft.deb"]]
 
 manualInstalls = ["https://public-cdn.cloud.unity3d.com/hub/prod/UnityHubSetup.AppImage"]
 

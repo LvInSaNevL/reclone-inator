@@ -7,7 +7,8 @@ def yellowText(input):
 # PPAs that I need
 repos = ["ppa:lyzardking/ubuntu-make",
                "ppa:ubuntu-mozilla-daily/firefox-aurora",
-               "ppa:obsproject/obs-studio"]
+               "ppa:obsproject/obs-studio",
+               "sudo add-apt-repository ppa:lutris-team/lutris"]
 
 # APT install list
 aptPacks = ["ubuntu-gnome-desktop --no-install-recommends",
@@ -34,17 +35,18 @@ aptPacks = ["ubuntu-gnome-desktop --no-install-recommends",
                     "cifs-utils",
                     "gimp",
                     "ffmpeg"
-                    "obs-studio"]
+                    "obs-studio",
+                    "lutris"]
 
 # Snap packages
 snapPacks = ["okular",
                      "dotnet-sdk && sudo snap alias dotnet-sdk.dotnet dotnet"]
 
 # Debian Archives
-debs = [["https://discordapp.com/api/download/canary?platform=linux", "Discord Canary", "./installTemp/discord.deb"],
-            ["https://go.microsoft.com/fwlink/?LinkID=760865", "VS Code Insiders", "./installTemp/vscode.deb"],
-            ["https://steamcdn-a.akamaihd.net/client/installer/steam.deb", "Steam", "./installTemp/steam.deb"],
-            ["https://launcher.mojang.com/download/Minecraft.deb", "Minecrat", "./installTemp/minecraft.deb"]]
+debs = [["https://discordapp.com/api/download/canary?platform=linux", "Discord Canary", "discord.deb"],
+            ["https://go.microsoft.com/fwlink/?LinkID=760865", "VS Code Insiders", "vscode.deb"],
+            ["https://steamcdn-a.akamaihd.net/client/installer/steam.deb", "Steam", "steam.deb"],
+            ["https://launcher.mojang.com/download/Minecraft.deb", "Minecrat", "minecraft.deb"]]
 
 manualInstalls = ["https://public-cdn.cloud.unity3d.com/hub/prod/UnityHubSetup.AppImage"]
 
@@ -56,9 +58,11 @@ gnomeSettings = ["gsettings set org.gnome.desktop.background show-desktop-icons 
                              "org.gnome.desktop.background picture-uri file:///%s/backgrounds/Enceladus.png" %(os.getcwd()),
                              "org.gnome.shell.extensions.dash-to-dock dock-position BOTTOM"]
 
-# Authenticating with sudo
-yellowText("Please authenticate as sudo")
-os.system("sudo -v")
+gameDrivers = ["add-apt-repository ppa:paulo-miguel-dias/pkppa",
+                          "dpkg --add-architecture i386",
+                          "apt update && sudo apt upgrade",
+                          "apt install libgl1-mesa-glx:i386 libgl1-mesa-dri:i386",
+                          "apt install mesa-vulkan-drivers mesa-vulkan-drivers:i386"]
 
 # Adding repos
 for ppa in repos:
@@ -83,28 +87,32 @@ os.system("mkdir ./installTemp")
 for deb in debs:
    yellowText("Installing " + deb[1])
    os.system("wget -O ./installTemp/%s %s" %(deb[2], deb[0]))
-   os.system("sudo dpkg -i %s" %deb[2])
+   os.system("sudo dpkg -i ./installTemp/%s" %deb[2])
 yellowText("Cleaning up install files")
 os.system("rm -rv ./installTemp")
 
 yellowText("Fixing and removing packages")
-os.system("sudo apt install --fix-broken -y && sudo apt autoremove")
+os.system("sudo apt install --fix-broken -y && sudo apt autoremove -y")
 
 yellowText("Updating the system")
 os.system("sudo apt update && sudo apt upgrade")
 
+# Video drivers ( Currently for Intel drivers on Ubuntu 18.04)
+yellowText("Installing video drivers")
+for driver in gameDrivers:
+    os.system("sudo %s" %driver)
+
 # Quality of life changes (Network drives, gnome settings, VS Code settings, Forge MC installer)
-username = raw_input("What is your Bistack username; ")
-password = raw_input("What is your Bistack password; ")
 print("sudo su -c \"echo '/dev/sda2	       /mnt           	              auto auto,nouser,exec,rw,async,atime	             0 0' >> /etc/fstab")
+username = raw_input("What is your Bistack username? ")
+password = raw_input("What is your Bistack password? ")
 for mount in fstab:
-    mountCreds = mount.format(username, password)
     print("sudo su -c \"echo '{}' >> /etc/fstab".format(mount.format(username, password)))
 for setting in gnomeSettings:
     os.system("gsettings set %s" %setting)
-os.system("wget -0 forge.jar https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.12.2-14.23.5.2844/forge-1.12.2-14.23.5.2844-installer.jar")
-os.system("java -jar forge-1.12.2-14.23.5.2844-installer.jar nogui")
+os.system("wget -0 .installTemp/forge.jar https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.12.2-14.23.5.2844/forge-1.12.2-14.23.5.2844-installer.jar")
+os.system("java -jar .installTemp/forge-1.12.2-14.23.5.2844-installer.jar nogui")
 
 # Reboots the system
 raw_input("Press any key to reboot the system")
-os.system("reboot")
+os.system("systemctl reboot -i")

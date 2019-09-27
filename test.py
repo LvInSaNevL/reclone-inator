@@ -1,10 +1,12 @@
 import shutil
 import os
 
-gnomeSettings = ["desktop.background show-desktop-icons false",
-                 "desktop.background picture-uri file:///%s/backgrounds/Enceladus.png" %(os.getcwd()),
-                 "shell.extensions.dash-to-dock dock-position BOTTOM",
-                 "shell favorite-apps \"['org.gnome.Terminal.desktop', 'org.gnome.Nautilus.desktop', 'firefox.desktop', 'discord-canary.desktop', 'code-insiders.desktop']\""]
+aliases = ["# Custom Aliases",
+           "alias mcstart='java -Xmx1024M -Xms1024M -jar server_1.1.4.jar nogui'",
+           "alias update='sudo apt-get update && sudo apt-get upgrade'",
+           "alias ip='echo \"Local IP:    $(hostname -i)\" && echo \"External IP: $(wget -qO- http://ipecho.net/plain | xargs echo)\"',
+           "alias cpv='rsync -ah --info=progress2'"
+           "qemu(){ qemu-system-x86_64 -boot d -cdrom $1 -m 1024; }"]
 
-for setting in gnomeSettings:
-    os.system("gsettings set org.gnome.%s" %setting)
+for alias in aliases:
+    os.system("sudo echo '%s' >> ~/.bashrc" %alias)

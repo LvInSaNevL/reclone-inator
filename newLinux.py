@@ -8,7 +8,8 @@ def yellowText(input):
 repos = ["ppa:lyzardking/ubuntu-make",
         "ppa:ubuntu-mozilla-daily/firefox-aurora",
         "ppa:obsproject/obs-studio",
-        "sudo add-apt-repository ppa:lutris-team/lutris"]
+        "ppa:lutris-team/lutris",
+        "deb https://dl.winehq.org/wine-builds/ubuntu/ bionic main"]
 
 # APT install list
 aptPacks = ["ubuntu-gnome-desktop --no-install-recommends",
@@ -38,11 +39,16 @@ aptPacks = ["ubuntu-gnome-desktop --no-install-recommends",
             "ffmpeg"
             "obs-studio",
             "lutris",
-            "firefox"]
+            "firefox",
+            "okular",
+            "deluged",
+            "deluge-web,
+            "deluge-console",
+            "deluge",
+            "youtube-dl"]
 
 # Snap packages
-snapPacks = ["okular",
-            "dotnet-sdk && sudo snap alias dotnet-sdk.dotnet dotnet"]
+snapPacks = ["dotnet-sdk && sudo snap alias dotnet-sdk.dotnet dotnet"]
 
 # Debian Archives
 debs = [["https://discordapp.com/api/download/canary?platform=linux", "Discord Canary", "discord.deb"],
@@ -59,13 +65,20 @@ fstab = ["//bistack/vault      /mnt/Network_Shares/Vault      cifs username={},p
 gnomeSettings = ["desktop.background show-desktop-icons false",
                  "desktop.background picture-uri file:///%s/backgrounds/Enceladus.png" %(os.getcwd()),
                  "shell.extensions.dash-to-dock dock-position BOTTOM",
-                 "shell favorite-apps \"['org.gnome.Terminal.desktop', 'org.gnome.Nautilus.desktop', 'firefox.desktop', 'discord-canary.desktop', 'code-insiders.desktop']\""]
+                 "shell favorite-apps \"['org.gnome.Terminal.desktop', 'org.gnome.Nautilus.desktop', 'firefox.desktop', 'discord-canary.desktop', 'code-insiders.desktop', 'lutris.desktop']\""]
 
 gameDrivers = ["add-apt-repository ppa:paulo-miguel-dias/pkppa -y",
                 "dpkg --add-architecture i386",
                 "apt update && sudo apt upgrade",
                 "apt install libgl1-mesa-glx:i386 libgl1-mesa-dri:i386",
                 "apt install mesa-vulkan-drivers mesa-vulkan-drivers:i386"]
+
+aliases = ["# Custom Aliases",
+           "alias mcstart='java -Xmx1024M -Xms1024M -jar server_1.1.4.jar nogui'",
+           "alias update='sudo apt-get update && sudo apt-get upgrade'",
+           "alias ip='echo \"Local IP:    $(hostname -i)\" && echo \"External IP: $(wget -qO- http://ipecho.net/plain | xargs echo)\"',
+           "alias cpv='rsync -ah --info=progress2'"
+           "qemu(){ qemu-system-x86_64 -boot d -cdrom $1 -m 1024; }"]
 
 # Adding repos
 for ppa in repos:
@@ -105,14 +118,16 @@ yellowText("Installing video drivers")
 for driver in gameDrivers:
     os.system("sudo %s" %driver)
 
-# Quality of life changes (Network drives, gnome settings, VS Code settings, Forge MC installer)
-print("sudo su -c \"echo '/dev/sda	       /mnt           	              auto auto,nouser,exec,rw,async,atime	             0 0' >> /etc/fstab")
+# Quality of life changes (Network drives, gnome settings, VS Code settings, Bash Aliases)
+os.system("sudo su -c \"echo '/dev/sda	       /mnt           	              auto auto,nouser,exec,rw,async,atime	             0 0' >> /etc/fstab\"")
 username = raw_input("What is your Bistack username? ")
 password = raw_input("What is your Bistack password? ")
 for mount in fstab:
-    print("sudo su -c \"echo '{}' >> /etc/fstab".format(mount.format(username, password)))
+    os.system("sudo su -c \"echo '{}' >> /etc/fstab\"".format(mount.format(username, password)))
 for setting in gnomeSettings:
     os.system("gsettings set org.gnome.%s" %setting)
+for alias in aliases:
+    os.system("sudo echo '%s' >> ~/.bashrc" %alias
 
 # Reboots the system
 raw_input("Press any key to reboot the system")

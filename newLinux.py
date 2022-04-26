@@ -42,7 +42,7 @@ aptPacks = ["ubuntu-gnome-desktop --no-install-recommends",
             "firefox",
             "okular",
             "deluged",
-            "deluge-web,
+            "deluge-web",
             "deluge-console",
             "deluge",
             "youtube-dl"]
@@ -58,10 +58,6 @@ debs = [["https://discordapp.com/api/download/canary?platform=linux", "Discord C
 
 manualInstalls = ["https://public-cdn.cloud.unity3d.com/hub/prod/UnityHubSetup.AppImage"]
 
-fstab = ["//bistack/vault      /mnt/Network_Shares/Vault      cifs username={},password={},noperm,iocharset=utf8 0 0",
-         "//bistack/matt       /mnt/Network_Shares/Matt       cifs username={},password={},noperm,iocharset=utf8 0 0",
-         "//bistack/cadosphere /mnt/Network_Shares/Cadosphere cifs username={},password={},noperm,iocharset=utf8 0 0"]
-
 gnomeSettings = ["desktop.background show-desktop-icons false",
                  "desktop.background picture-uri file:///%s/backgrounds/Enceladus.png" %(os.getcwd()),
                  "shell.extensions.dash-to-dock dock-position BOTTOM",
@@ -76,7 +72,7 @@ gameDrivers = ["add-apt-repository ppa:paulo-miguel-dias/pkppa -y",
 aliases = ["# Custom Aliases",
            "alias mcstart='java -Xmx1024M -Xms1024M -jar server_1.1.4.jar nogui'",
            "alias update='sudo apt-get update && sudo apt-get upgrade'",
-           "alias ip='echo \"Local IP:    $(hostname -i)\" && echo \"External IP: $(wget -qO- http://ipecho.net/plain | xargs echo)\"',
+           "alias ip='echo \"Local IP:    $(hostname -i)\" && echo \"External IP: $(wget -qO- http://ipecho.net/plain | xargs echo)\"'",
            "alias cpv='rsync -ah --info=progress2'",
            "alias lock='xdg-screensaver lock'",
            "qemu(){ qemu-system-x86_64 -boot d -cdrom $1 -m 1024; }"]
@@ -120,16 +116,11 @@ for driver in gameDrivers:
     os.system("sudo %s" %driver)
 
 # Quality of life changes (Network drives, gnome settings, VS Code settings, Bash Aliases)
-os.system("sudo su -c \"echo '/dev/sda	       /mnt           	              auto auto,nouser,exec,rw,async,atime	             0 0' >> /etc/fstab\"")
-username = raw_input("What is your Bistack username? ")
-password = raw_input("What is your Bistack password? ")
-for mount in fstab:
-    os.system("sudo su -c \"echo '{}' >> /etc/fstab\"".format(mount.format(username, password)))
 for setting in gnomeSettings:
     os.system("gsettings set org.gnome.%s" %setting)
 for alias in aliases:
-    os.system("sudo echo '%s' >> ~/.bashrc" %alias
+    os.system("sudo echo '%s' >> ~/.bashrc" %alias)
 
 # Reboots the system
-raw_input("Press any key to reboot the system")
+input("Press any key to reboot the system")
 os.system("systemctl reboot -i")

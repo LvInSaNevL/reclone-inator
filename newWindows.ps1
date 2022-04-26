@@ -11,8 +11,9 @@ $packages = @("adobereader",
               "steam")
 
 # The list of software installed from installers              
-$software = @(("https://discordapp.com/api/download/canary?platform=win", "Discord Canary", "discordcanary"),
-              ("https://download.microsoft.com/download/1/3/F/13F19BF0-17CF-4D0F-938C-41D0489C3FE6/KB3133719-x64.msu.msu", "Microsoft Media Pack", "microsoft_media_pack")
+$software = @(("https://discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x86", "Discord", "discord"),
+              ("https://download.microsoft.com/download/1/3/F/13F19BF0-17CF-4D0F-938C-41D0489C3FE6/KB3133719-x64.msu.msu", "Microsoft Media Pack", "microsoft_media_pack",
+              "https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&channel=Release&version=VS2022&source=VSLandingPage&cid=2030&passive=true", "Visual Stuido", "visual_studio")
              )
 
 # Checks internet connection

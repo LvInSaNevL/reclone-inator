@@ -25,6 +25,8 @@ aptPacks = ["ubuntu-gnome-desktop --no-install-recommends",
             "libgl1-mesa-dri:i386",
             "libgl1-mesa-glx:i386",
             "libc6:i386",
+            "software-properties-common",
+            "wget",
             "vlc",
             "blender",
             "liblttng-ust0",
@@ -45,23 +47,22 @@ aptPacks = ["ubuntu-gnome-desktop --no-install-recommends",
             "deluge-web",
             "deluge-console",
             "deluge",
-            "youtube-dl"]
+            "youtube-dl",
+            "colordiff"]
 
 # Snap packages
 snapPacks = ["dotnet-sdk && sudo snap alias dotnet-sdk.dotnet dotnet"]
 
 # Debian Archives
-debs = [["https://discordapp.com/api/download/canary?platform=linux", "Discord Canary", "discord.deb"],
-        ["https://go.microsoft.com/fwlink/?LinkID=760865", "VS Code Insiders", "vscode.deb"],
+debs = [["https://discordapp.com/api/download?platform=linux&format=deb", "Discord", "discord.deb"],
+        ["https://go.microsoft.com/fwlink/?LinkID=760868", "VS Code", "vscode.deb"],
         ["https://steamcdn-a.akamaihd.net/client/installer/steam.deb", "Steam", "steam.deb"],
-        ["https://launcher.mojang.com/download/Minecraft.deb", "Minecrat", "minecraft.deb"]]
-
-manualInstalls = ["https://public-cdn.cloud.unity3d.com/hub/prod/UnityHubSetup.AppImage"]
+        ["https://launcher.mojang.com/download/Minecraft.deb", "Minecraft", "minecraft.deb"]]
 
 gnomeSettings = ["desktop.background show-desktop-icons false",
                  "desktop.background picture-uri file:///%s/backgrounds/Enceladus.png" %(os.getcwd()),
                  "shell.extensions.dash-to-dock dock-position BOTTOM",
-                 "shell favorite-apps \"['org.gnome.Terminal.desktop', 'org.gnome.Nautilus.desktop', 'firefox.desktop', 'discord-canary.desktop', 'code-insiders.desktop', 'lutris.desktop']\""]
+                 "shell favorite-apps \"['org.gnome.Terminal.desktop', 'org.gnome.Nautilus.desktop', 'firefox.desktop', 'discord.desktop', 'code.desktop', 'lutris.desktop']\""]
 
 gameDrivers = ["add-apt-repository ppa:paulo-miguel-dias/pkppa -y",
                 "dpkg --add-architecture i386",
@@ -70,12 +71,24 @@ gameDrivers = ["add-apt-repository ppa:paulo-miguel-dias/pkppa -y",
                 "apt install mesa-vulkan-drivers mesa-vulkan-drivers:i386"]
 
 aliases = ["# Custom Aliases",
-           "alias mcstart='java -Xmx1024M -Xms1024M -jar server_1.1.4.jar nogui'",
            "alias update='sudo apt-get update && sudo apt-get upgrade'",
+           "alias please='sudo $(history -p !!)",
            "alias ip='echo \"Local IP:    $(hostname -i)\" && echo \"External IP: $(wget -qO- http://ipecho.net/plain | xargs echo)\"'",
            "alias cpv='rsync -ah --info=progress2'",
            "alias lock='xdg-screensaver lock'",
-           "qemu(){ qemu-system-x86_64 -boot d -cdrom $1 -m 1024; }"]
+           "alias meminfo='free -m -1 -t'",
+           "alias psmem='ps auxf | sort -nr -k 4 | head -10'",
+           "alias pscpu='ps auxf | sort -nr -k 3 | head -10'",
+           "alias mount='mount | awk -F' ' '{ printf \"%s\t%s\n\",\$1,\$3; }' | column -t | egrep ^/dev/ | sort'"
+           "# Colored and otherwise formatted outputs",
+           "alias ls='ls --color=auto'",
+           "alias grep='grep --color=auto'",
+           "alias diff='colordiff'",
+           "alias iplist='sudo /sbin/iptables -L -n -v --line-numbers'",
+           "alias iplistin='sudo /sbin/iptables -L INPUT -n -v --line-numbers'",
+           "alias iplistout='sudo /sbin/iptables -L OUTPUT -n -v --line-numbers'",
+           "alias iplistfw='sudo /sbin/iptables -L FORWARD -n -v --line-numbers'",
+           "alias firewall=iptlist",]
 
 # Adding repos
 for ppa in repos:
